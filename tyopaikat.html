@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="tyyli.css">
+
+</head>
+
+<body>
+
+    <div class="topnav" id="myTopnav">
+        <a href="json1.html" class="active">Etusivu</a>
+        <a href="ticocafe.html">Tico Cafe</a>
+        <a href="palaveri.html">Palaveri</a>
+        <a href="tyopaikat.html">Työpaikat</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+
+    <div id="tyopaikat" style="padding-left:16px">
+    </div>
+
+    <script>
+
+         fetch('http://gis.vantaa.fi/rest/tyopaikat/v1/Opetusala')
+        .then(function(response) {
+        return response.json();
+    })
+        .then(function(data) {
+        let teksti = "<h2>Opetusalan työpaikat Vantaalla</h2><ul>";
+
+        // Käydään läpi kaikki työpaikat taulukosta
+      for (let i = 0; i < data.length; i++) {
+        teksti += "<li>" 
+               + data[i].tyotehtava + " " + data[i].osoite 
+               + " <a href='" + data[i].linkki + "' target='_blank'>Linkki</a>"
+               + "</li>";
+      }
+
+      teksti += "</ul>";
+      document.getElementById("tyopaikat").innerHTML = teksti;
+    })
+    .catch(function(error) {
+      document.getElementById("tyopaikat").innerHTML =
+        "<p>Tietoa ei pystytä hakemaan</p>";
+    });
+
+
+
+
+        //navipalkin käyttöliittymä
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

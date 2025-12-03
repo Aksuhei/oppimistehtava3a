@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="tyyli.css">
+
+
+</head>
+
+<body>
+
+  <div class="topnav" id="myTopnav">
+    <a href="json1.html" class="active">Etusivu</a>
+    <a href="ticocafe.html">Tico Cafe</a>
+    <a href="palaveri.html">Palaveri</a>
+    <a href="tyopaikat.html">Työpaikat</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+
+  <div id="vastaus" style="padding-left:16px">
+  </div>
+
+  <script>
+
+    fetch('https://raw.githubusercontent.com/Aksuhei/tico-projekti/main/tico.json')
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (responseJson) {
+        // Kutsutaan omaa funktiota
+        kerro(responseJson);
+      })
+      .catch(function (error) {
+        document.getElementById("vastaus").innerHTML =
+          "<p>Tietoa ei pystytä hakemaan</p>";
+      });
+
+    function kerro(data) {
+      let teksti = "";
+      teksti += "<h1>" + data.yritys + "</h1>";
+      teksti += "<p>Osoite: " + data.yhteystiedot.osoite + "</p>";
+      teksti += "<p>Puhelin: " + data.yhteystiedot.puhelin + "</p>";
+      teksti += "<p>Email: " + data.yhteystiedot.email + "</p>";
+
+      teksti += "<h3>Tuotteet</h3><ul>";
+      for (var i = 0; i < data.tuotteet.length; i++) {
+        teksti += "<li>" + data.tuotteet[i] + "</li>";
+      }
+      teksti += "</ul>";
+
+      teksti += "<h3>Henkilökunta</h3><ul>";
+      for (var j = 0; j < data.henkilokunta.length; j++) {
+        teksti += "<li>" + data.henkilokunta[j].nimi + " – " + data.henkilokunta[j].titteli + "</li>";
+      }
+      teksti += "</ul>";
+
+      document.getElementById("vastaus").innerHTML = teksti;
+    }
+
+
+
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
+  </script>
+
+</body>
+
+</html>
